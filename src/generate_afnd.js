@@ -29,8 +29,29 @@ function parseTRow(row, afnd) {
 }
 
 function parseNTRow(row, afnd) {
-  // console.log(row)
-  return afnd
+  const state = row.slice(1, 2) === "S" ? 0 : afnd.available
+  const isFinal = row.slice(-1) === "ε"
+  const values = isFinal ? row.slice(8, -4) : row.slice(8)
+
+  const updatedAfnd = values.split(" | ").reduce((acc, nt) => {
+    const tkn = nt.slice(0, 1)
+    const ntState = (nt.charCodeAt(2) - 65) + afnd.available
+
+    // add the token (column) to the afnd if it doesn't exists yet
+    if (!acc.tokens.includes(tkn)) {
+      acc.af = {...acc.af, [state]: {...acc.af[state]}}
+      acc.af = objMap(acc.af, ([k, v]) => ([k, {...v, [tkn]: []}]))
+      acc.tokens = [...acc.tokens, tkn]
+    }
+
+    acc.af[state] = { ...acc.af[state], [tkn]: [...((acc.af[state] || {})[tkn]) || [], ntState] }
+
+    return acc
+  }, afnd)
+
+  if (isFinal) updatedAfnd.af[state] = { ...updatedAfnd.af[state], final: true }
+  if (state !== 0) updatedAfnd.available++
+  return updatedAfnd
 }
 
 function generateAfnd(input) {
