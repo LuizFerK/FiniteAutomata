@@ -3,22 +3,24 @@ import { Af, AfRow, AfTable } from '.'
 function valueToCharCode(values: number[]) {
   return values.map(value => {
     if (value === 0) return 'S'
-    if (value === 18) return 'A'
-    return String.fromCharCode(value + 64)
+    if (value < 19) return String.fromCharCode(value + 64)
+    else return String.fromCharCode(value + 65)
   }).join(", ")
 }
 
 function keyToCharCode(key: string, value: AfRow) {
   if (key === "0") return 'S'
+  if (value.hasOwnProperty("error")) return "•"
   const suffix = value.hasOwnProperty("final") ? "*" : ""
-  if (key === "18")  return suffix + "A"
-  return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 64)
+
+  if (Number(key) < 19)  return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 64)
+  else return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 65)
 }
 
 function rowCellsValuesToCharCode(object: AfRow) {
   return Object.fromEntries(
     Object.entries(object)
-      .filter(([k, v]) => !(k === "final" && v === true))
+      .filter(([k, v]) => !((k === "final" || k === "error") && v === true))
       .map(([k, v]) => [k, valueToCharCode(v as number[])])
   )
 }
