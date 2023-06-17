@@ -1,6 +1,6 @@
-const { objMap } = require('./helpers/obj_map')
+import { Af } from '.'
 
-function parseTRow(row, afnd) {
+function parseTRow(row: string, afnd: Af) {
   return [...row.split(""), ""].reduce((acc, tkn, idx) => {
     // end of sentence
     if (tkn === "") {
@@ -12,13 +12,13 @@ function parseTRow(row, afnd) {
     // add the token (column) to the afnd if it doesn't exists yet
     if (!acc.tokens.includes(tkn)) {
       acc.af = {...acc.af, [idx]: {...acc.af[idx]}}
-      acc.af = objMap(acc.af, ([k, v]) => ([k, {...v, [tkn]: []}]))
+      acc.af = Object.fromEntries(Object.entries(acc.af).map(([k, v]) => ([k, {...v, [tkn]: []}])))
       acc.tokens = [...acc.tokens, tkn]
     }
 
     // add the state (row) to the afnd
     if (idx === 0) {
-      acc.af[0] = { ...acc.af[0], [tkn]: [...acc.af[0][tkn], acc.available] }
+      acc.af[0] = { ...acc.af[0], [tkn]: [...(acc.af[0][tkn] as number[]), acc.available] }
     } else {
       acc.af[acc.available] = { ...acc.af[acc.available], [tkn]: [acc.available + 1] }
       acc.available++
@@ -28,7 +28,7 @@ function parseTRow(row, afnd) {
   }, afnd)
 }
 
-function parseNTRow(row, afnd) {
+function parseNTRow(row: string, afnd: Af) {
   const state = row.slice(1, 2) === "S" ? 0 : afnd.available
   const isFinal = row.slice(-1) === "ε"
   const values = isFinal ? row.slice(8, -4) : row.slice(8)
@@ -40,11 +40,11 @@ function parseNTRow(row, afnd) {
     // add the token (column) to the afnd if it doesn't exists yet
     if (!acc.tokens.includes(tkn)) {
       acc.af = {...acc.af, [state]: {...acc.af[state]}}
-      acc.af = objMap(acc.af, ([k, v]) => ([k, {...v, [tkn]: []}]))
+      acc.af = Object.fromEntries(Object.entries(acc.af).map(([k, v]) => ([k, {...v, [tkn]: []}])))
       acc.tokens = [...acc.tokens, tkn]
     }
 
-    acc.af[state] = { ...acc.af[state], [tkn]: [...((acc.af[state] || {})[tkn]) || [], ntState] }
+    acc.af[state] = { ...acc.af[state], [tkn]: [...((acc.af[state] || {})[tkn]) as number[] || [], ntState] }
 
     return acc
   }, afnd)
@@ -54,12 +54,10 @@ function parseNTRow(row, afnd) {
   return updatedAfnd
 }
 
-function generateAfnd(input) {
+export default function generateAfnd(input: string): Af {
   return input.split("\n").reduce((afnd, row) => {
     return row[0] === "<"
       ? parseNTRow(row, afnd)
       : parseTRow(row, afnd)
-  }, { af: {}, tokens: [], available: 1 })
+  }, { af: {}, tokens: [], available: 1 } as Af)
 }
-
-module.exports = generateAfnd
