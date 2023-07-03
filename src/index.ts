@@ -1,5 +1,6 @@
 import fs from "fs/promises"
 import generateAfnd from "./generate_afnd"
+import addTerminalStates from "./terminal_states"
 import addErrorState from "./error_state"
 import printAf from "./print_af"
 
@@ -26,7 +27,8 @@ export interface Af {
 
 async function main() {
   const input = await fs.readFile('assets/input.txt', { encoding: 'utf8' })
-  const afnd = generateAfnd(input)
+  const afndBase = generateAfnd(input)
+  const afnd = addTerminalStates(afndBase)
   const afFinal = addErrorState(afnd)
   printAf(afFinal)
 }
