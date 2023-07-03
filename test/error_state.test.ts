@@ -19,7 +19,8 @@ test('should add error state on the default afnd', () => {
       "13": {"a": [13], "e": [13], "final": true, "i": [13], "o": [13], "u": [13]}
     },
     "available": 14,
-    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"]
+    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
+    "nTStates": { last: 0 }
   }
 
   const result = addErrorState(afnd)
@@ -44,7 +45,8 @@ test('should add error state on the default afnd', () => {
       "8161": {"a": [8161], "e": [8161], "error": true, "i": [8161], "n": [8161], "o": [8161], "s": [8161], "t": [8161], "u": [8161]}
     },
     "available": 14,
-    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"]
+    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
+    "nTStates": { last: 0 }
   }
 
   expect(result).toStrictEqual(expectedResult);

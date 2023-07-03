@@ -13,10 +13,15 @@ export interface AfTable {
   [k: string]: AfRow 
 }
 
+interface NTStates {
+  [k: string]: number
+}
+
 export interface Af {
   af: AfTable
   tokens: string[]
   available: number
+  nTStates: NTStates
 }
 
 async function main() {

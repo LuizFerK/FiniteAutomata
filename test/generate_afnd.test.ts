@@ -26,9 +26,40 @@ senao
       "12": {"final": true, "i": [], "u": []},
       "13": {"a": [13], "e": [13], "final": true, "i": [13], "o": [13], "u": [13]}
     },
-    "available": 14,
-    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"]
+    "available": 13,
+    "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
+    "nTStates": { A: 13 }
   }
 
   expect(result).toStrictEqual(expectedResult);
-});
+})
+
+test('should generate a valid afnd for a only non-terminal input', () => {
+  const input = `<S> ::= a<A> | a<C> | b<B> | b<C>
+<A> ::= a<F> | a
+<B> ::= b<F> | b
+<C> ::= a<A> | a<C> | b<B> | b<C>
+<F> ::= a<F> | b<F> | a | b`
+
+  const result = generateAfnd(input)
+
+  const expectedResult = {
+    "af": {
+      "0": {"a": [1, 3], "b": [2, 3]},
+      "1": {"a": [6, -1]},
+      "2": {"b": [6, -1]},
+      "3": {"a": [1, 3], "b": [2, 3]},
+      "6": {"a": [6, -1], "b": [6, -1]}
+    },
+    "available": 1,
+    "nTStates": {
+      "A": 1,
+      "B": 2,
+      "C": 3,
+      "F": 6
+    },
+    "tokens": ["a", "b"]
+  }
+
+  expect(result).toStrictEqual(expectedResult);
+})
