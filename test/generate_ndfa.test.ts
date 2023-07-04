@@ -28,7 +28,7 @@ senao
     },
     "available": 13,
     "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
-    "nTStates": { A: 13 }
+    "nTStates": { S: 0, A: 13 }
   }
 
   expect(result).toStrictEqual(expectedResult);
@@ -53,6 +53,7 @@ test('should generate a valid ndfa for a only non-terminal input', () => {
     },
     "available": 1,
     "nTStates": {
+      "S": 0,
       "A": 1,
       "B": 2,
       "C": 3,

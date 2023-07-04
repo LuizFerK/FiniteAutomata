@@ -60,7 +60,7 @@ export default function generateNdfa(input: string): Fa {
     fa: {},
     tokens: [],
     available: 1,
-    nTStates: {}
+    nTStates: {S: 0}
   }
 
   // for each input row, parse it based on type

@@ -1,14 +1,8 @@
 import { Fa } from '.'
 
-interface TerminalState {
-  idx: number
-  state: number
-}
-
 export default function addTerminalStates(ndfa: Fa) {
   ndfa.available = Object.values(ndfa.nTStates).sort().slice(-1)[0]
-  let terminalStates = [] as TerminalState[]
-  let idx = 0
+  let terminalStates = [] as number[]
 
   for (const state in ndfa.fa) {
     for (const tkn in ndfa.fa[state]) {
@@ -19,15 +13,14 @@ export default function addTerminalStates(ndfa: Fa) {
         if (state !== -1) return state
 
         ndfa.available++
-        terminalStates = [...terminalStates, { state: ndfa.available, idx: idx }]
+        terminalStates = [...terminalStates, ndfa.available]
         return ndfa.available
       })
-
-      idx++
     }
   }
 
   for (const terminalState of terminalStates) {
-    ndfa.fa[terminalState.state] = {final: true}
+    ndfa.fa[terminalState] = {final: true}
+    ndfa.nTStates = { ...ndfa.nTStates, [String.fromCharCode(terminalState + 64)]: terminalState }
   }
 }

@@ -1,4 +1,4 @@
-import addTerminalStates from "../src/terminal_states"
+import parseNdfaToDfa from "../src/ndfa_to_dfa"
 
 test('should add none terminal states on the default ndfa', () => {
   const ndfa = {
@@ -23,9 +23,9 @@ test('should add none terminal states on the default ndfa', () => {
     "nTStates": { last: 0 }
   }
 
-  addTerminalStates(ndfa)
+  parseNdfaToDfa(ndfa)
 
-  const expectedResult = { ...ndfa, available: 0 }
+  const expectedResult = "asdasd"
 
   expect(ndfa).toStrictEqual(expectedResult);
 })
@@ -50,24 +50,9 @@ test('should add all terminal states when needed', () => {
     "tokens": ["a", "b"]
   }
 
-  addTerminalStates(ndfa)
+  parseNdfaToDfa(ndfa)
 
-  const expectedResult = {
-    "fa": {
-      "0": {"a": [1, 3], "b": [2, 3]},
-      "1": {"a": [6, 7]},
-      "2": {"b": [6, 8]},
-      "3": {"a": [1, 3], "b": [2, 3]},
-      "6": {"a": [6, 9], "b": [6, 10]},
-      "7": {"final": true},
-      "8": {"final": true},
-      "9": {"final": true},
-      "10": {"final": true}
-    },
-    "available": 10,
-    "nTStates": {"S": 0, "A": 1, "B": 2, "C": 3, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10},
-    "tokens": ["a", "b"]
-  }
+  const expectedResult = "asdasd"
 
   expect(ndfa).toStrictEqual(expectedResult);
 })
