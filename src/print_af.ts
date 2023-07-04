@@ -1,4 +1,4 @@
-import { Af, AfRow, AfTable } from '.'
+import { Fa, FaRow, FaTable } from '.'
 
 function valueToCharCode(values: number[]) {
   return values.map(value => {
@@ -8,7 +8,7 @@ function valueToCharCode(values: number[]) {
   }).join(", ")
 }
 
-function keyToCharCode(key: string, value: AfRow) {
+function keyToCharCode(key: string, value: FaRow) {
   if (key === "0") return 'S'
   if (value.hasOwnProperty("error")) return "•"
   const suffix = value.hasOwnProperty("final") ? "*" : ""
@@ -17,7 +17,7 @@ function keyToCharCode(key: string, value: AfRow) {
   else return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 65)
 }
 
-function rowCellsValuesToCharCode(object: AfRow) {
+function rowCellsValuesToCharCode(object: FaRow) {
   return Object.fromEntries(
     Object.entries(object)
       .filter(([k, v]) => !((k === "final" || k === "error") && v === true))
@@ -25,7 +25,7 @@ function rowCellsValuesToCharCode(object: AfRow) {
   )
 }
 
-function stateKeysToCharCode(table: AfTable) {
+function stateKeysToCharCode(table: FaTable) {
   return Object.fromEntries(
     Object.entries(table)
       .map(([k, v]) => [
@@ -35,6 +35,6 @@ function stateKeysToCharCode(table: AfTable) {
   )
 }
 
-export default function printAf(afnd: Af) {
-  console.table(stateKeysToCharCode(afnd.af))
+export default function printFa(ndfa: Fa) {
+  console.table(stateKeysToCharCode(ndfa.fa))
 }

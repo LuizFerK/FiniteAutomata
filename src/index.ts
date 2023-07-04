@@ -1,25 +1,26 @@
 import fs from "fs/promises"
-import generateAfnd from "./generate_afnd"
+import generateNdfa from "./generate_ndfa"
 import addTerminalStates from "./terminal_states"
+// import parseNdfaToDfa from "./ndfa_to_dfa"
 import addErrorState from "./error_state"
 import printAf from "./print_af"
 
-export interface AfRow {
+export interface FaRow {
   [k: string]: number[] | boolean | undefined
   final?: boolean
   error?: boolean
 }
 
-export interface AfTable {
-  [k: string]: AfRow 
+export interface FaTable {
+  [k: string]: FaRow
 }
 
 interface NTStates {
   [k: string]: number
 }
 
-export interface Af {
-  af: AfTable
+export interface Fa {
+  fa: FaTable
   tokens: string[]
   available: number
   nTStates: NTStates
@@ -27,10 +28,11 @@ export interface Af {
 
 async function main() {
   const input = await fs.readFile('assets/input.txt', { encoding: 'utf8' })
-  const afndBase = generateAfnd(input)
-  const afnd = addTerminalStates(afndBase)
-  const afFinal = addErrorState(afnd)
-  printAf(afFinal)
+  const ndfa = generateNdfa(input)
+  addTerminalStates(ndfa)
+  // const dfa = parseNdfaToDfa(ndfa)
+  addErrorState(ndfa)
+  printAf(ndfa)
 }
 
 main()

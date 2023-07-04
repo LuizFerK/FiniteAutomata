@@ -1,28 +1,33 @@
-import { Af } from '.'
+import { Fa } from '.'
 
-export default function addTerminalStates(afnd: Af): Af {
-  afnd.available = Object.values(afnd.nTStates).sort().slice(-1)[0]
-  let addTerminalRowFlag: number[] = []
+interface TerminalState {
+  idx: number
+  state: number
+}
 
-  afnd.af = Object.fromEntries(
-    Object.entries(afnd.af).map(([k, v]) => {
-      const values = Object.fromEntries(Object.entries(v).map(([ck, cv]) => {
-        if (typeof cv !== "object") return [ck, cv]
+export default function addTerminalStates(ndfa: Fa) {
+  ndfa.available = Object.values(ndfa.nTStates).sort().slice(-1)[0]
+  let terminalStates = [] as TerminalState[]
+  let idx = 0
 
-        const terminals = cv.map(state => {
-          if (state !== -1) return state
-
-          afnd.available++
-          addTerminalRowFlag = [...addTerminalRowFlag, afnd.available]
-          return afnd.available
-        })
-  
-        return [ck, terminals]
-      }))
+  for (const state in ndfa.fa) {
+    for (const tkn in ndfa.fa[state]) {
+      const values = ndfa.fa[state][tkn]
+      if (typeof values !== "object") continue
       
-      return [k, values]
-    }).concat(addTerminalRowFlag.map(state => [state, {final: true}]))
-  )  
-  
-  return afnd
+      ndfa.fa[state][tkn] = values.map(state => {
+        if (state !== -1) return state
+
+        ndfa.available++
+        terminalStates = [...terminalStates, { state: ndfa.available, idx: idx }]
+        return ndfa.available
+      })
+
+      idx++
+    }
+  }
+
+  for (const terminalState of terminalStates) {
+    ndfa.fa[terminalState.state] = {final: true}
+  }
 }

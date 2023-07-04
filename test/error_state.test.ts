@@ -1,8 +1,8 @@
 import addErrorState from "../src/error_state"
 
-test('should add error state on the default afnd', () => {
-  const afnd = {
-    "af": {
+test('should add error state on the default ndfa', () => {
+  const ndfa = {
+    "fa": {
       "0": {"a": [13], "e": [3, 13], "i": [13], "n": [], "o": [13], "s": [1, 8], "t": [], "u": [13]},
       "1": {"a": [], "e": [2], "i": [], "n": [], "o": [], "t": [], "u": []},
       "2": {"a": [], "final": true, "i": [], "n": [], "o": [], "t": [], "u": []},
@@ -23,10 +23,10 @@ test('should add error state on the default afnd', () => {
     "nTStates": { last: 0 }
   }
 
-  const result = addErrorState(afnd)
+  addErrorState(ndfa)
 
   const expectedResult = {
-    "af": {
+    "fa": {
       "0": {"a": [13], "e": [3, 13], "i": [13], "n": [8161], "o": [13], "s": [1, 8], "t": [8161], "u": [13]},
       "1": {"a": [8161], "e": [2], "i": [8161], "n": [8161], "o": [8161], "s": [8161], "t": [8161], "u": [8161]},
       "2": {"a": [8161], "e": [8161], "final": true, "i": [8161], "n": [8161], "o": [8161], "s": [8161], "t": [8161], "u": [8161]},
@@ -49,5 +49,5 @@ test('should add error state on the default afnd', () => {
     "nTStates": { last: 0 }
   }
 
-  expect(result).toStrictEqual(expectedResult);
+  expect(ndfa).toStrictEqual(expectedResult);
 });

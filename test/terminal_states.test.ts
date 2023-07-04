@@ -1,8 +1,8 @@
 import addTerminalStates from "../src/terminal_states"
 
-test('should add none terminal states on the default afnd', () => {
-  const afnd = {
-    "af": {
+test('should add none terminal states on the default ndfa', () => {
+  const ndfa = {
+    "fa": {
       "0": {"a": [13], "e": [3, 13], "i": [13], "n": [], "o": [13], "s": [1, 8], "t": [], "u": [13]},
       "1": {"a": [], "e": [2], "i": [], "n": [], "o": [], "t": [], "u": []},
       "2": {"a": [], "final": true, "i": [], "n": [], "o": [], "t": [], "u": []},
@@ -23,16 +23,16 @@ test('should add none terminal states on the default afnd', () => {
     "nTStates": { last: 0 }
   }
 
-  const result = addTerminalStates(afnd)
+  addTerminalStates(ndfa)
 
-  const expectedResult = { ...afnd, available: 0 }
+  const expectedResult = { ...ndfa, available: 0 }
 
-  expect(result).toStrictEqual(expectedResult);
+  expect(ndfa).toStrictEqual(expectedResult);
 })
 
 test('should add all terminal states when needed', () => {
-  const afnd = {
-    "af": {
+  const ndfa = {
+    "fa": {
       "0": {"a": [1, 3], "b": [2, 3]},
       "1": {"a": [6, -1]},
       "2": {"b": [6, -1]},
@@ -49,10 +49,10 @@ test('should add all terminal states when needed', () => {
     "tokens": ["a", "b"]
   }
 
-  const result = addTerminalStates(afnd)
+  addTerminalStates(ndfa)
 
   const expectedResult = {
-    "af": {
+    "fa": {
       "0": {"a": [1, 3], "b": [2, 3]},
       "1": {"a": [6, 7]},
       "2": {"b": [6, 8]},
@@ -68,5 +68,5 @@ test('should add all terminal states when needed', () => {
     "tokens": ["a", "b"]
   }
 
-  expect(result).toStrictEqual(expectedResult);
+  expect(ndfa).toStrictEqual(expectedResult);
 })
