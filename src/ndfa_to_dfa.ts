@@ -1,32 +1,27 @@
 import { Fa, FaTable } from '.'
 
-export default function parseNdfaToDfa(ndfa: Fa) {
+export default function parseNdfaToDfa(ndfa: Fa): Fa {
   const dfa = {"S": ndfa.fa[0]} as FaTable
   let states = ["S"]
 
   for (let i = 0; i < states.length; i++) {
     const state = states[i]
-    const getChildValues = state[0] === "["
 
-    if (getChildValues) {
+    if (state[0] === "[") {
       const values = state.slice(1, -1).split("")
       
       for (const v of values) {
-        const vidx = ndfa.nTStates[v]
+        const idx = v.charCodeAt(0) - 64
+        const ntIdx = ndfa.nTStates[v]
 
-        console.log("VVVVVV")
-        console.log(v)
-        console.log(ndfa.nTStates)
-        console.log(vidx)
-        console.log(ndfa.fa[vidx])
-        console.log("^^^^^^")
+        const NAOSEI = ndfa.fa[idx] || ndfa.fa[ntIdx]
 
-        if (ndfa.fa[vidx].final) {
+        if (NAOSEI.final) {
           dfa[state] = { ...dfa[state], final: true }
         }
 
         for (const tkn of ndfa.tokens) {
-          const sla = (ndfa.fa[vidx][tkn] || []) as number[]
+          const sla = (NAOSEI[tkn] || []) as number[]
           if (!sla) continue
           
           for (let j = 0; j < sla.length; j++) {
@@ -42,17 +37,22 @@ export default function parseNdfaToDfa(ndfa: Fa) {
           
         }
       }
+    } else {
+      const idx = state.charCodeAt(0) - 64
+      const ntIdx = ndfa.nTStates[state]
+
+      dfa[state] = ndfa.fa[idx] || ndfa.fa[ntIdx]
     }
 
     for (const tkn of ndfa.tokens) {
       const values = dfa[state][tkn]
-      if (!values || typeof values !== "object") continue
-      
+      if (!values || typeof values !== "object" || values.length === 0) continue
+
       const textValues =
         typeof values === "string"
           ? values
           : values.length > 1
-            ? `[${(values).sort().map(v => String.fromCharCode(v + 64)).join("")}]`
+            ? `[${(values).sort((a, b) => a - b).map(v => String.fromCharCode(v + 64)).join("")}]`
             : String.fromCharCode(values[0] + 64)
 
       dfa[state] = { ...dfa[state], [tkn]: textValues }
@@ -63,6 +63,5 @@ export default function parseNdfaToDfa(ndfa: Fa) {
     }
   }
 
-  console.table(dfa)
-  return dfa
+  return {fa:dfa, tokens: ndfa.tokens} as Fa
 }

@@ -25,9 +25,22 @@ test('should add none terminal states on the default ndfa', () => {
 
   const dfa = parseNdfaToDfa(ndfa)
 
-  const expectedResult = "asdasd"
+  const expectedResult = {
+    "S": {"a": "M", "e": "[CM]", "i": "M", "n": [], "o": "M", "s": "[AH]", "t": [], "u": "M"},
+    "[AH]": {"e": "[BI]"},
+    "[CM]": {"a": "M", "e": "M", "final": true, "i": "M", "n": "D", "o": "M", "u": "M"},
+    "M": {"a": "M", "e": "M", "final": true, "i": "M", "o": "M", "u": "M"},
+    "[BI]": {"final": true, "n": "J"},
+    "D": {"a": [], "i": [], "o": [], "t": "E", "u": []},
+    "J": {"a": "K", "i": [], "u": []},
+    "E": {"a": "F", "i": [], "o": [], "u": []},
+    "K": {"i": [], "o": "L", "u": []},
+    "F": {"i": [], "o": "G", "u": []},
+    "L": {"final": true, "i": [], "u": []},
+    "G": {"final": true, "i": [], "u": []}
+  }
 
-  expect(dfa).toStrictEqual(expectedResult);
+  expect(dfa.fa).toStrictEqual(expectedResult);
 })
 
 test('should add all terminal states when needed', () => {
@@ -52,15 +65,15 @@ test('should add all terminal states when needed', () => {
 
   const expectedResult = {
     "S": {"a": "[AC]", "b": "[BC]"},
-    "[ACFGI]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
-    "[ACFG]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
-    "[ACFI]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
     "[AC]": {"a": "[ACFG]", "b": "[BC]"},
-    "[BCFH]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true},
     "[BC]": {"a": "[AC]", "b": "[BCFH]"},
-    "[JBCFH]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true},
-    "[JBCF]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true}
+    "[ACFG]": {"a": "[ACFGI]", "b": "[BCFJ]", "final": true},
+    "[BCFH]": {"a": "[ACFI]", "b": "[BCFHJ]", "final": true},
+    "[ACFGI]": {"a": "[ACFGI]", "b": "[BCFJ]", "final": true},
+    "[BCFJ]": {"a": "[ACFI]", "b": "[BCFHJ]", "final": true},
+    "[ACFI]": {"a": "[ACFGI]", "b": "[BCFJ]", "final": true},
+    "[BCFHJ]": {"a": "[ACFI]", "b": "[BCFHJ]", "final": true}
   }
 
-  expect(dfa).toStrictEqual(expectedResult);
+  expect(dfa.fa).toStrictEqual(expectedResult);
 })

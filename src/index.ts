@@ -3,7 +3,8 @@ import generateNdfa from "./generate_ndfa"
 import addTerminalStates from "./terminal_states"
 import parseNdfaToDfa from "./ndfa_to_dfa"
 import addErrorState from "./error_state"
-import printAf from "./print_af"
+import printNdfa from "./print_ndfa"
+// import printDfa from "./print_dfa"
 
 export interface FaRow {
   [k: string]: number[] | string | boolean | undefined
@@ -28,11 +29,13 @@ export interface Fa {
 
 async function main() {
   const input = await fs.readFile('assets/input.txt', { encoding: 'utf8' })
-  const fa = generateNdfa(input)
-  addTerminalStates(fa)
-  printAf(fa)
-  const dfa = parseNdfaToDfa(fa)
-  // addErrorState(ndfa)
+  const ndfa = generateNdfa(input)
+  addTerminalStates(ndfa)
+  const dfa = parseNdfaToDfa(ndfa)
+  addErrorState(ndfa)
+  addErrorState(dfa)
+  printNdfa(ndfa)
+  // printDfa(dfa)
 }
 
 main()
