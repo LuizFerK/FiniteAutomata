@@ -63,5 +63,5 @@ export default function parseNdfaToDfa(ndfa: Fa): Fa {
     }
   }
 
-  return {fa:dfa, tokens: ndfa.tokens} as Fa
+  return { fa:dfa, tokens: ndfa.tokens } as Fa
 }

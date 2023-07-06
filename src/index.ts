@@ -4,7 +4,7 @@ import addTerminalStates from "./terminal_states"
 import parseNdfaToDfa from "./ndfa_to_dfa"
 import addErrorState from "./error_state"
 import printNdfa from "./print_ndfa"
-// import printDfa from "./print_dfa"
+import printDfa from "./print_dfa"
 
 export interface FaRow {
   [k: string]: number[] | string | boolean | undefined
@@ -35,7 +35,7 @@ async function main() {
   addErrorState(ndfa)
   addErrorState(dfa)
   printNdfa(ndfa)
-  // printDfa(dfa)
+  printDfa(dfa)
 }
 
 main()

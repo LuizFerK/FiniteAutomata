@@ -35,6 +35,6 @@ function stateKeysToCharCode(table: FaTable) {
   )
 }
 
-export default function printFa(ndfa: Fa) {
+export default function printNdfa(ndfa: Fa) {
   console.table(stateKeysToCharCode(ndfa.fa))
 }
