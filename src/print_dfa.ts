@@ -1,7 +1,6 @@
 import { Fa, FaRow, FaTable } from '.'
 
 function formatState(key: string, values: FaRow) {
-  if (values.error) return "•"
   return values.final ? `*${key}` : key
 }
 

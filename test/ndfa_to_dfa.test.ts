@@ -1,6 +1,6 @@
 import parseNdfaToDfa from "../src/ndfa_to_dfa"
 
-test('should add none terminal states on the default ndfa', () => {
+test('should parse the default ndfa to an dfa', () => {
   const ndfa = {
     "fa": {
       "0": {"a": [13], "e": [3, 13], "i": [13], "n": [], "o": [13], "s": [1, 8], "t": [], "u": [13]},
@@ -43,7 +43,7 @@ test('should add none terminal states on the default ndfa', () => {
   expect(dfa.fa).toStrictEqual(expectedResult);
 })
 
-test('should add all terminal states when needed', () => {
+test('should parse an ndfa to an dfa', () => {
   const ndfa = {
     "fa": {
       "0": {"a": [1, 3], "b": [2, 3]},

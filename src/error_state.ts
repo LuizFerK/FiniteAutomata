@@ -1,7 +1,8 @@
 import { Fa } from '.'
 
-export default function addErrorState(ndfa: Fa) {
-  ndfa.fa = { ...ndfa.fa, 8161: { error: true } }
+export default function addErrorState(ndfa: Fa, type: "ndfa" | "dfa") {
+  const errorState = type === "ndfa" ? 8161 : "•"
+  ndfa.fa = { ...ndfa.fa, [errorState]: { error: true } }
   ndfa.fa = Object.fromEntries(
     Object.entries(ndfa.fa).map(([k, v]) => {
       const values = ndfa.tokens.reduce((acc, tkn) => {

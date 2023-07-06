@@ -32,8 +32,8 @@ async function main() {
   const ndfa = generateNdfa(input)
   addTerminalStates(ndfa)
   const dfa = parseNdfaToDfa(ndfa)
-  addErrorState(ndfa)
-  addErrorState(dfa)
+  addErrorState(ndfa, "ndfa")
+  addErrorState(dfa, "dfa")
   printNdfa(ndfa)
   printDfa(dfa)
 }
