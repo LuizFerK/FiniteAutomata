@@ -23,4 +23,6 @@ export default function addTerminalStates(ndfa: Fa) {
     ndfa.fa[terminalState] = {final: true}
     ndfa.nTStates = { ...ndfa.nTStates, [String.fromCharCode(terminalState + 64)]: terminalState }
   }
+
+  ndfa.available++
 }

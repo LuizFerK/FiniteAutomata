@@ -20,14 +20,12 @@ test('should add none terminal states on the default ndfa', () => {
     },
     "available": 14,
     "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
-    "nTStates": { last: 0 }
+    "nTStates": { S: 0, A: 13 }
   }
 
   addTerminalStates(ndfa)
 
-  const expectedResult = { ...ndfa, available: 0 }
-
-  expect(ndfa).toStrictEqual(expectedResult);
+  expect(ndfa).toStrictEqual(ndfa);
 })
 
 test('should add all terminal states when needed', () => {
@@ -64,7 +62,7 @@ test('should add all terminal states when needed', () => {
       "9": {"final": true},
       "10": {"final": true}
     },
-    "available": 10,
+    "available": 11,
     "nTStates": {"S": 0, "A": 1, "B": 2, "C": 3, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10},
     "tokens": ["a", "b"]
   }

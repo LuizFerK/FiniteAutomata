@@ -1,16 +1,8 @@
-import { Fa } from '.'
-
-interface Dfa {
-  [state: string]: {
-    [token: string]: string | number[]
-  }
-}
+import { Fa, FaTable } from '.'
 
 export default function parseNdfaToDfa(ndfa: Fa) {
-  const dfa = {"S": ndfa.fa[0]} as Dfa
+  const dfa = {"S": ndfa.fa[0]} as FaTable
   let states = ["S"]
-
-  console.log(ndfa)
 
   for (let i = 0; i < states.length; i++) {
     const state = states[i]
@@ -22,6 +14,13 @@ export default function parseNdfaToDfa(ndfa: Fa) {
       for (const v of values) {
         const vidx = ndfa.nTStates[v]
 
+        console.log("VVVVVV")
+        console.log(v)
+        console.log(ndfa.nTStates)
+        console.log(vidx)
+        console.log(ndfa.fa[vidx])
+        console.log("^^^^^^")
+
         if (ndfa.fa[vidx].final) {
           dfa[state] = { ...dfa[state], final: true }
         }
@@ -31,8 +30,12 @@ export default function parseNdfaToDfa(ndfa: Fa) {
           if (!sla) continue
           
           for (let j = 0; j < sla.length; j++) {
-            if (!((dfa[state] || {})[tkn] || []).includes(sla[j])) {
-              dfa[state][tkn] = [...((dfa[state] || {})[tkn] || []), sla[j]]
+            const test = (dfa[state] || {})[tkn] || []
+
+            if (typeof test !== "object") continue
+
+            if (!test.includes(sla[j])) {
+              dfa[state][tkn] = [...test, sla[j]]
             }
           }
 
@@ -43,7 +46,7 @@ export default function parseNdfaToDfa(ndfa: Fa) {
 
     for (const tkn of ndfa.tokens) {
       const values = dfa[state][tkn]
-      if (!values) continue
+      if (!values || typeof values !== "object") continue
       
       const textValues =
         typeof values === "string"

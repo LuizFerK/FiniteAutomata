@@ -6,7 +6,7 @@ import addErrorState from "./error_state"
 import printAf from "./print_af"
 
 export interface FaRow {
-  [k: string]: number[] | boolean | undefined
+  [k: string]: number[] | string | boolean | undefined
   final?: boolean
   error?: boolean
 }

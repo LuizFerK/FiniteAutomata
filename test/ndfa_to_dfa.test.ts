@@ -20,39 +20,47 @@ test('should add none terminal states on the default ndfa', () => {
     },
     "available": 14,
     "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
-    "nTStates": { last: 0 }
+    "nTStates": { S: 0, A: 13 }
   }
 
-  parseNdfaToDfa(ndfa)
+  const dfa = parseNdfaToDfa(ndfa)
 
   const expectedResult = "asdasd"
 
-  expect(ndfa).toStrictEqual(expectedResult);
+  expect(dfa).toStrictEqual(expectedResult);
 })
 
 test('should add all terminal states when needed', () => {
   const ndfa = {
     "fa": {
       "0": {"a": [1, 3], "b": [2, 3]},
-      "1": {"a": [6, -1]},
-      "2": {"b": [6, -1]},
+      "1": {"a": [6, 7]},
+      "2": {"b": [6, 8]},
       "3": {"a": [1, 3], "b": [2, 3]},
-      "6": {"a": [6, -1], "b": [6, -1]}
+      "6": {"a": [6, 9], "b": [6, 10]},
+      "7": {"final": true},
+      "8": {"final": true},
+      "9": {"final": true},
+      "10": {"final": true}
     },
-    "available": 1,
-    "nTStates": {
-      "S": 0,
-      "A": 1,
-      "B": 2,
-      "C": 3,
-      "F": 6
-    },
+    "available": 10,
+    "nTStates": {"S": 0, "A": 1, "B": 2, "C": 3, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10},
     "tokens": ["a", "b"]
   }
 
-  parseNdfaToDfa(ndfa)
+  const dfa = parseNdfaToDfa(ndfa)
 
-  const expectedResult = "asdasd"
+  const expectedResult = {
+    "S": {"a": "[AC]", "b": "[BC]"},
+    "[ACFGI]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
+    "[ACFG]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
+    "[ACFI]": {"a": "[ACFGI]", "b": "[JBCF]", "final": true},
+    "[AC]": {"a": "[ACFG]", "b": "[BC]"},
+    "[BCFH]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true},
+    "[BC]": {"a": "[AC]", "b": "[BCFH]"},
+    "[JBCFH]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true},
+    "[JBCF]": {"a": "[ACFI]", "b": "[JBCFH]", "final": true}
+  }
 
-  expect(ndfa).toStrictEqual(expectedResult);
+  expect(dfa).toStrictEqual(expectedResult);
 })

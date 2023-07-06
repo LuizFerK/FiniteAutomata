@@ -20,7 +20,7 @@ test('should add error state on the default ndfa', () => {
     },
     "available": 14,
     "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
-    "nTStates": { last: 0 }
+    "nTStates": {}
   }
 
   addErrorState(ndfa)
@@ -46,7 +46,7 @@ test('should add error state on the default ndfa', () => {
     },
     "available": 14,
     "tokens": ["s", "e", "n", "t", "a", "o", "i", "u"],
-    "nTStates": { last: 0 }
+    "nTStates": {}
   }
 
   expect(ndfa).toStrictEqual(expectedResult);
