@@ -13,8 +13,8 @@ function keyToCharCode(key: string, value: FaRow) {
   if (value.hasOwnProperty("error")) return "•"
   const suffix = value.hasOwnProperty("final") ? "*" : ""
 
-  if (Number(key) < 19)  return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 64)
-  else return suffix + String.fromCharCode(Number((key).toString().replace("*", "")) + 65)
+  if (Number(key) < 19)  return suffix + String.fromCharCode(Number(key) + 64)
+  else return suffix + String.fromCharCode(Number(key) + 65)
 }
 
 function rowCellsValuesToCharCode(object: FaRow) {
