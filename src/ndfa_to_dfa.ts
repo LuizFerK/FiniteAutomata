@@ -1,49 +1,54 @@
 import { Fa, FaTable } from '.'
 
 export default function parseNdfaToDfa(ndfa: Fa): Fa {
-  const dfa = {"S": ndfa.fa[0]} as FaTable
+  const dfa = {} as FaTable
   let states = ["S"]
 
   for (let i = 0; i < states.length; i++) {
     const state = states[i]
 
+    // if we need to get the states non-deterministic values and join them
     if (state[0] === "[") {
       const values = state.slice(1, -1).split("")
       
+      // iterate over every non-deterministic state
       for (const v of values) {
-        const idx = v.charCodeAt(0) - 64
+        const tIdx = v.charCodeAt(0) - 64
         const ntIdx = ndfa.nTStates[v]
 
-        const NAOSEI = ndfa.fa[idx] || ndfa.fa[ntIdx]
+        // get the row index to the ndfa
+        const idx = ndfa.fa[tIdx] || ndfa.fa[ntIdx]
 
-        if (NAOSEI.final) {
+        // if any non-deterministic state is final, then the new one is final too
+        if (idx.final) {
           dfa[state] = { ...dfa[state], final: true }
         }
 
+        // join every non-deterministic value for every token
         for (const tkn of ndfa.tokens) {
-          const sla = (NAOSEI[tkn] || []) as number[]
-          if (!sla) continue
+          const nDValues = (idx[tkn] || []) as number[]
+          if (!nDValues) continue
           
-          for (let j = 0; j < sla.length; j++) {
-            const test = (dfa[state] || {})[tkn] || []
+          for (let j = 0; j < nDValues.length; j++) {
+            const tokens = (dfa[state] || {})[tkn] || []
 
-            if (typeof test !== "object") continue
+            if (typeof tokens !== "object") continue
 
-            if (!test.includes(sla[j])) {
-              dfa[state][tkn] = [...test, sla[j]]
+            if (!tokens.includes(nDValues[j])) {
+              dfa[state][tkn] = [...tokens, nDValues[j]]
             }
           }
-
-          
         }
       }
+    // just copy the non-deterministic state values to the new one
     } else {
-      const idx = state.charCodeAt(0) - 64
+      const tIdx = state.charCodeAt(0) - 64
       const ntIdx = ndfa.nTStates[state]
 
-      dfa[state] = ndfa.fa[idx] || ndfa.fa[ntIdx]
+      dfa[state] = ndfa.fa[tIdx] || ndfa.fa[ntIdx]
     }
 
+    // join the non-deterministic values and create a new state if needed
     for (const tkn of ndfa.tokens) {
       const values = dfa[state][tkn]
       if (!values || typeof values !== "object" || values.length === 0) continue

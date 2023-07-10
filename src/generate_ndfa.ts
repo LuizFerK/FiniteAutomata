@@ -20,6 +20,8 @@ function parseTRow(row: string, ndfa: Fa) {
       ndfa.tokens.push(tkn)
     }
 
+
+
     // add the state (row) to the ndfa
     if (idx === 0) {
       ndfa.fa[0] = { ...ndfa.fa[0], [tkn]: [...(((ndfa.fa[0] || {})[tkn] || []) as number[]), ndfa.available] }
