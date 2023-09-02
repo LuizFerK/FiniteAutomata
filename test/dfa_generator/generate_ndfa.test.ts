@@ -1,4 +1,4 @@
-import generateNdfa from "../src/generate_ndfa"
+import generateNdfa from "../../src/dfa_generator/generate_ndfa"
 
 test('should generate a valid ndfa for the default example', () => {
   const input = `se

@@ -1,4 +1,4 @@
-import addTerminalStates from "../src/terminal_states"
+import addTerminalStates from "../../src/dfa_generator/terminal_states"
 
 test('should add none terminal states on the default ndfa', () => {
   const ndfa = {

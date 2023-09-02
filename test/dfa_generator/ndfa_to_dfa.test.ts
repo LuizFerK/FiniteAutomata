@@ -1,4 +1,4 @@
-import parseNdfaToDfa from "../src/ndfa_to_dfa"
+import parseNdfaToDfa from "../../src/dfa_generator/ndfa_to_dfa"
 
 test('should parse the default ndfa to an dfa', () => {
   const ndfa = {

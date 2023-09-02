@@ -1,4 +1,4 @@
-import addErrorState from "../src/error_state"
+import addErrorState from "../../src/dfa_generator/error_state"
 
 test('should add error state on the default ndfa', () => {
   const ndfa = {
