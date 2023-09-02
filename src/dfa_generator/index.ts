@@ -1,4 +1,3 @@
-import fs from "fs/promises"
 import generateNdfa from "./generate_ndfa"
 import addTerminalStates from "./terminal_states"
 import parseNdfaToDfa from "./ndfa_to_dfa"
@@ -27,8 +26,7 @@ export interface Fa {
   nTStates: NTStates
 }
 
-export default async function dfaGenerator() {
-  const input = await fs.readFile('assets/input.txt', { encoding: 'utf8' })
+export default function dfaGenerator(input: string) {
   const ndfa = generateNdfa(input)
   addTerminalStates(ndfa)
   const dfa = parseNdfaToDfa(ndfa)
