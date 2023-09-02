@@ -36,4 +36,6 @@ export default async function dfaGenerator() {
   addErrorState(dfa, "dfa")
   printNdfa(ndfa)
   printDfa(dfa)
+
+  return dfa
 }
