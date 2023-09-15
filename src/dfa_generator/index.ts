@@ -2,7 +2,7 @@ import generateNdfa from "./generate_ndfa"
 import addTerminalStates from "./terminal_states"
 import parseNdfaToDfa from "./ndfa_to_dfa"
 import addErrorState from "./error_state"
-import printNdfa from "./print_ndfa"
+// import printNdfa from "./print_ndfa"
 import printDfa from "./print_dfa"
 
 export interface FaRow {
@@ -32,7 +32,7 @@ export default function dfaGenerator(input: string) {
   const dfa = parseNdfaToDfa(ndfa)
   addErrorState(ndfa, "ndfa")
   addErrorState(dfa, "dfa")
-  printNdfa(ndfa)
+  // printNdfa(ndfa)
   printDfa(dfa)
 
   return dfa

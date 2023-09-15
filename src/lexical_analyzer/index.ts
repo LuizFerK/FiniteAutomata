@@ -13,7 +13,8 @@ function parseString(string: string, idx: number, dfa: FaTable) {
     state = dfa[state][char] as string
   }
 
-  if (!state) {
+  
+  if (!state || !dfa[state].final) {
     state = "•"
   }
 
