@@ -1,5 +1,9 @@
-se
-sai
-ab
-<S> ::= a<A> | e<A> | i<A> | o<A> | u<A>
-<A> ::= a<A> | e<A> | i<A> | o<A> | u<A> | ε
+if
+eq
+do
+else
+end
+=
+<S> ::= v<A> | a<A> | r<A> | 0<B> | 1<B> | 2<B>
+<A> ::= v<A> | a<A> | r<A> | ε
+<B> ::= 0<B> | 1<B> | 2<B> | ε

@@ -1,2 +1,7 @@
-bai ouia se ab ai
-s aix
+var = 1
+
+if var eq 1 do
+  var = 2
+else
+  var = 0
+end

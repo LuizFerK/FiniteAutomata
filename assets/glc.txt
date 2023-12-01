@@ -1,0 +1,5 @@
+S' -> S
+S -> var = 1
+S -> if var eq 1 do S A end
+A -> else S
+A -> ''
