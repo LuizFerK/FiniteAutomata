@@ -24,9 +24,6 @@ function parseString(string: string, idx: number, dfa: FaTable) {
       break
     }
 
-    console.log(state)
-    console.log(char)
-
     state = dfa[state][char] as string
   }
 

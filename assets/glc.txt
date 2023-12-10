@@ -1,5 +1,6 @@
 S' -> S
-S -> var = 1
+S -> var = 1 S
 S -> if var eq 1 do S A end
+S -> ''
 A -> else S
 A -> ''
