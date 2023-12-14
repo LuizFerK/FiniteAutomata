@@ -10,9 +10,10 @@ async function main() {
 
   const dfa = dfaGenerator(input)
   const symbolTable = lexicalAnalyzer(codeInput, dfa.fa)
+
+  console.log(symbolTable)
   const acceptance = syntacticAnalyzer(lrtInput, symbolTable)
   
-  console.log(symbolTable)
   console.log(acceptance)
 }
 

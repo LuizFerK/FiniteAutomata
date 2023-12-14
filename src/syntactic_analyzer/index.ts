@@ -1,4 +1,4 @@
-import { SymbolTable } from "../lexical_analyzer";
+import { SymbolTable, SymbolTableRow } from "../lexical_analyzer";
 
 const FAILED = "Failed!"
 const SUCCEED = "Succeed!"
@@ -7,6 +7,11 @@ interface Lrt {
   [state: string]: {
     [token: string]: string | number | undefined
   }
+}
+
+function generateError(stbRow: SymbolTableRow) {
+  console.log(`Error on ${stbRow.label} at row: ${stbRow.row + 1}`)
+  return FAILED
 }
 
 export default function syntacticAnalyzer(lrtInput: string, stb: SymbolTable) {
@@ -22,8 +27,8 @@ export default function syntacticAnalyzer(lrtInput: string, stb: SymbolTable) {
     const action = lrt[stack[stack.length - 1]][literal]
     console.log(stb[rowIdx], stack)
 
-    if (!action) return FAILED
-    if (typeof action === "number") return FAILED
+    if (!action) return generateError(stb[rowIdx])
+    if (typeof action === "number") return generateError(stb[rowIdx])
     if (action === "acc") return SUCCEED
 
     const actionType = action[0]
@@ -36,9 +41,6 @@ export default function syntacticAnalyzer(lrtInput: string, stb: SymbolTable) {
       rowIdx = rowIdx + 1
     } else {
       const reductionSize = glcReductionSize[Number(nextState)] * 2
-      console.log(Number(nextState))
-      console.log(reductionSize)
-      console.log(stack.slice(0, stack.length - reductionSize))
       const reductionState = glcReductionState[Number(nextState)]
       stack = stack.slice(0, stack.length - reductionSize)
       const lastStackEl = stack[stack.length - 1]

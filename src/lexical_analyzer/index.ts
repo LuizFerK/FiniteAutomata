@@ -1,6 +1,6 @@
 import { FaTable } from "../dfa_generator";
 
-interface SymbolTableRow {
+export interface SymbolTableRow {
   label: string
   state: string
   row: number
